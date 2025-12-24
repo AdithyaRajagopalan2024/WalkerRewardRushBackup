@@ -1,0 +1,15 @@
+mkdir checkpoints tuning_results src
+
+mkdir src/agents src/envs
+
+touch train.py auto_tune.py requirements.txt README.md how_to_run.txt
+
+touch src/__init__.py
+touch src/common.py
+touch src/eval.py
+
+touch src/agents/__init__.py
+touch src/agents/ppo_agent.py
+
+touch src/envs/__init__.py
+touch src/envs/walker_env.py
