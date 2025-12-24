@@ -54,12 +54,12 @@ class PPOAgent:
         log_probs_old = torch.tensor(np.array(log_probs_old), dtype=torch.float32)
         returns = torch.tensor(np.array(returns), dtype=torch.float32)
         advantages = torch.tensor(np.array(advantages), dtype=torch.float32)
+
         
-        # Advantage Normalization (Crucial for BipedalWalker)
         advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-8)
         
         inds = np.arange(obs.shape[0])
-        for _ in range(10): # 10 Epochs
+        for _ in range(10):
             np.random.shuffle(inds)
             for start in range(0, obs.shape[0], self.batch_size):
                 end = start + self.batch_size
@@ -83,5 +83,7 @@ class PPOAgent:
                 
                 self.optimizer.zero_grad()
                 loss.backward()
-                nn.utils.clip_grad_norm_(self.policy.parameters(), 0.5) # Gradient clipping
+                nn.utils.clip_grad_norm_(self.policy.parameters(), 0.5)
                 self.optimizer.step()
+
+

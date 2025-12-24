@@ -7,17 +7,18 @@ import os
 import gym
 import numpy as np
 
-# CHECK AGAIN IF BOOL8 IS VALID AND EXISTS
+
 if not hasattr(np, 'bool8'):
     np.bool8 = np.bool_
 
 def main():
     # env = SimpleWalkerEnv()
-    env = gym.make("BipedalWalker-v3")
+    env = gym.make("BipedalWalker-v3", hardcore=True)
 
     agent = PPOAgent(obs_dim=env.observation_space.shape[0], act_dim=env.action_space.shape[0])
 
-    for epoch in range(200):
+
+    for epoch in range(400):
         obs, actions, log_probs, returns, advantages = rollout(env, agent)
         agent.update(obs, actions, log_probs, returns, advantages)
 

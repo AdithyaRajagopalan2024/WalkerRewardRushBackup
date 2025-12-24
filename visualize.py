@@ -4,7 +4,7 @@ import sys
 import gym
 import numpy as np
 
-# CHECK AGAIN IF BOOL8 IS VALID AND EXISTS
+
 if not hasattr(np, 'bool8'):
     np.bool8 = np.bool_
 
@@ -30,7 +30,7 @@ def visualize_rollout(agent, env):
 if __name__ == "__main__":
     MODEL_PATH = "checkpoints/walker.pt"
 
-    env = gym.make("BipedalWalker-v3", render_mode="human")
+    env = gym.make("BipedalWalker-v3", hardcore=True, render_mode="human")
     agent = PPOAgent(obs_dim=env.observation_space.shape[0], act_dim=env.action_space.shape[0])
 
     try:
@@ -62,3 +62,4 @@ if __name__ == "__main__":
 #         observation, info = env.reset()
 
 # env.close() # Close the visualization window after the loop
+# Environment and model loading code using Stable Baselines3 only 
