@@ -1,23 +1,28 @@
 import torch
 import time
 import sys
+import gym
+import numpy as np
 
-from src.envs.walker_env import SimpleWalkerEnv
+# CHECK AGAIN IF BOOL8 IS VALID AND EXISTS
+if not hasattr(np, 'bool8'):
+    np.bool8 = np.bool_
+
 from src.agents.ppo_agent import PPOAgent
 
 def visualize_rollout(agent, env):
     """Runs one episode and renders it."""
-    obs = env.reset()
+    obs, _ = env.reset()
     done = False
 
     while not done:
         env.render()
-        time.sleep(0.02)  # To make the rendering watchable
-
-        # Use deterministic actions for visualization to see what the agent has learned
+        time.sleep(0.02)
+        time.sleep(0.02)
         action = agent.act(obs, deterministic=True)[0]
 
-        obs, reward, done, _ = env.step(action)
+        obs, reward, terminated, truncated, _ = env.step(action)
+        done = terminated or truncated
 
     env.close()
 
@@ -25,8 +30,8 @@ def visualize_rollout(agent, env):
 if __name__ == "__main__":
     MODEL_PATH = "checkpoints/walker.pt"
 
-    env = SimpleWalkerEnv()
-    agent = PPOAgent(obs_dim=2, act_dim=1)
+    env = gym.make("BipedalWalker-v3", render_mode="human")
+    agent = PPOAgent(obs_dim=env.observation_space.shape[0], act_dim=env.action_space.shape[0])
 
     try:
         agent.policy.load_state_dict(torch.load(MODEL_PATH))
