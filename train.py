@@ -19,7 +19,7 @@ def main():
     obs_dim = env.observation_space.shape[0]
     act_dim = env.action_space.shape[0]
 
-    agent = PPOAgent(obs_dim, act_dim, lr=1e-4, entropy_coef=0.01)
+    agent = PPOAgent(obs_dim, act_dim, lr=1e-4, entropy_coef=0.02)
     stats = RunningStats(obs_dim)
     writer = SummaryWriter(log_dir="runs/walker_hardcore")
 

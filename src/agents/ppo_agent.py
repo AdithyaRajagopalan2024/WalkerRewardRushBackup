@@ -51,7 +51,7 @@ class PPOAgent:
         obs_t = torch.tensor(obs, dtype=torch.float32).unsqueeze(0)
         with torch.no_grad():
             mean, value = self.policy(obs_t)
-            std = torch.exp(torch.clamp(self.policy.log_std, -2, 0.5))
+            std = torch.exp(torch.clamp(self.policy.log_std, -3, 0.5))
             dist = torch.distributions.Normal(mean, std)
             
             action = mean if deterministic else dist.sample()
@@ -82,7 +82,7 @@ class PPOAgent:
                 mb_inds = inds[start:end]
                 
                 new_mean, new_values = self.policy(obs[mb_inds])
-                std = torch.exp(torch.clamp(self.policy.log_std, -2, 0.5))
+                std = torch.exp(torch.clamp(self.policy.log_std, -3, 0.5))
                 dist = torch.distributions.Normal(new_mean, std)
                 
                 new_log_probs = dist.log_prob(actions[mb_inds]).sum(dim=-1)
